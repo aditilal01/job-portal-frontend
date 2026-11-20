@@ -7,7 +7,7 @@ import { Loading, Notice, Shell } from '../components/Ui';
 import { useAuth } from '../context/AuthContext';
 import type { CandidateProfile } from '../types';
 
-type ProfileForm = Omit<CandidateProfile, 'userId' | 'name' | 'email' | 'updatedAt' | 'id'>;
+type ProfileForm = { [K in keyof Omit<CandidateProfile, 'userId' | 'name' | 'email' | 'updatedAt' | 'id'>]-?: string };
 const emptyForm: ProfileForm = {
   headline: '', phone: '', location: '', summary: '', skills: '',
   education: '', experience: '', portfolioUrl: '', linkedInUrl: '', githubUrl: '',
