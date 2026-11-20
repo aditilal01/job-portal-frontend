@@ -27,6 +27,7 @@ The token is held in `localStorage` because the current backend returns a bearer
 
 ## Deliberate API boundaries
 
-- Resume links returned by the API are used directly; backend authorization remains the authority for resume downloads.
-- The backend does not expose a recruiter's full job-edit payload in its dashboard response. This UI provides the edit form, but a production refinement should use the protected `GET /api/recruiter/jobs/{id}` endpoint before pre-filling every field.
+- Resume downloads use the authenticated API client so protected files are requested with the candidate/recruiter bearer token.
+- Recruiter job editing fetches the full job record from the protected `GET /api/recruiter/jobs/{id}` endpoint before pre-filling the form.
+- Public job search supports title/skills keyword matching, location filtering, maximum experience, pagination, and sorting.
 - User deletion, suspension, and profile editing are intentionally not displayed because no backend APIs support them.
