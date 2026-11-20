@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, type FormEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, CheckCircle2, Save, UserRound } from 'lucide-react';
 import { getCandidateProfile, saveCandidateProfile } from '../services/candidateProfileService';
@@ -33,10 +33,12 @@ export function CandidateProfilePage() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [accountEmail, setAccountEmail] = useState('');
 
   useEffect(() => {
     getCandidateProfile()
       .then(profile => {
+        setAccountEmail(profile.email || '');
         setForm({
           headline: profile.headline || '', phone: profile.phone || '',
           location: profile.location || '', summary: profile.summary || '',
@@ -59,7 +61,7 @@ export function CandidateProfilePage() {
     setSuccess('');
   };
 
-  const submit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setSaving(true);
     setError('');
@@ -95,7 +97,7 @@ export function CandidateProfilePage() {
           <p className="mt-3 text-xs text-slate-500">Your account identity is managed separately and cannot be changed here.</p>
           <div className="mt-4 grid gap-3 sm:grid-cols-2">
             <div><p className="text-xs font-semibold uppercase text-slate-500">Full name</p><p className="mt-1 font-semibold text-ink">{user?.name}</p></div>
-            <div><p className="text-xs font-semibold uppercase text-slate-500">Email address</p><p className="mt-1 font-semibold text-ink">{user?.email || 'Your registered email'}</p></div>
+            <div><p className="text-xs font-semibold uppercase text-slate-500">Email address</p><p className="mt-1 font-semibold text-ink">{accountEmail || 'Your registered email'}</p></div>
           </div>
         </section>
 
