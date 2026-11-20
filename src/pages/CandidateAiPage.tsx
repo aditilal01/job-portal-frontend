@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, type FormEvent } from 'react';
 import { FileText, Sparkles, Target, UploadCloud, CheckCircle2 } from 'lucide-react';
 import { Shell, Notice } from '../components/Ui';
 import { errorMessage } from '../services/api';
@@ -12,7 +12,7 @@ export function CandidateAiPage() {
   const [matching, setMatching] = useState(false);
   const [error, setError] = useState('');
 
-  const analyze = async (event: React.FormEvent) => {
+  const analyze = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!file) { setError('Choose a PDF, DOC, or DOCX resume first.'); return; }
     setBusy(true); setError(''); setMatches([]);
