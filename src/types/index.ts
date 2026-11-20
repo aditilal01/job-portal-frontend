@@ -25,3 +25,18 @@ export interface CandidateProfile {
   githubUrl?: string;
   updatedAt?: string;
 }
+
+export interface SavedJob {
+  id: string;
+  jobId: string;
+  title: string;
+  description: string;
+  requiredSkills: string;
+  location: string;
+  experienceRequired: number;
+  salaryRange?: string;
+  recruiterName: string;
+  isActive: boolean;
+  jobPostedAt: string;
+  savedAt: string;
+}
