@@ -52,3 +52,13 @@ export interface SavedJob {
   jobPostedAt: string;
   savedAt: string;
 }
+
+export interface AdminStats {
+  totalUsers: number;
+  candidates: number;
+  recruiters: number;
+  admins: number;
+  totalJobs: number;
+  activeJobs: number;
+  totalApplications: number;
+}
