@@ -7,7 +7,7 @@ import { Loading, Notice, Shell } from '../components/Ui';
 import { useAuth } from '../context/AuthContext';
 import type { CandidateProfile } from '../types';
 
-type ProfileForm = { [K in keyof Omit<CandidateProfile, 'userId' | 'name' | 'email' | 'updatedAt' | 'id'>]-?: string };
+type ProfileForm = { [K in keyof Omit<CandidateProfile, 'userId' | 'name' | 'email' | 'updatedAt' | 'id' | 'profileVisibleToRecruiters'>]-?: string };
 const emptyForm: ProfileForm = {
   headline: '', phone: '', location: '', summary: '', skills: '',
   education: '', experience: '', portfolioUrl: '', linkedInUrl: '', githubUrl: '',
@@ -34,11 +34,13 @@ export function CandidateProfilePage() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [accountEmail, setAccountEmail] = useState('');
+  const [profileVisible, setProfileVisible] = useState(false);
 
   useEffect(() => {
     getCandidateProfile()
       .then(profile => {
         setAccountEmail(profile.email || '');
+        setProfileVisible(Boolean(profile.profileVisibleToRecruiters));
         setForm({
           headline: profile.headline || '', phone: profile.phone || '',
           location: profile.location || '', summary: profile.summary || '',
@@ -67,7 +69,7 @@ export function CandidateProfilePage() {
     setError('');
     setSuccess('');
     try {
-      await saveCandidateProfile(form);
+      await saveCandidateProfile({ ...form, profileVisibleToRecruiters: profileVisible });
       setSuccess('Your profile has been saved.');
     } catch (e) {
       setError(errorMessage(e));
@@ -115,9 +117,12 @@ export function CandidateProfilePage() {
               )}
             </label>
           ))}
+          <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 md:col-span-2">
+            <label className="flex items-start gap-3"><input type="checkbox" className="mt-1 h-4 w-4 accent-brand" checked={profileVisible} onChange={e => setProfileVisible(e.target.checked)}/><span><span className="block text-sm font-semibold text-ink">Share my professional profile with recruiters</span><span className="mt-1 block text-xs leading-5 text-slate-600">When enabled, recruiters handling your job applications can view your headline, skills, experience, education and portfolio links. Your phone number is never shared through this view.</span></span></label>
+          </div>
           <div className="flex flex-wrap items-center gap-3 md:col-span-2">
             <button className="btn-primary inline-flex items-center gap-2" disabled={saving}><Save size={16}/>{saving ? 'Saving…' : 'Save profile'}</button>
-            <span className="text-xs text-slate-500">Changes are private to your account until you choose to share your profile.</span>
+            <span className="text-xs text-slate-500">Recruiters only see these details when you enable profile sharing.</span>
           </div>
         </form>
       </div>
