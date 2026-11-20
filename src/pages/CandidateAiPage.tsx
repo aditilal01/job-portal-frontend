@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from 'react';
+import { Link } from 'react-router-dom';
 import { FileText, Sparkles, Target, UploadCloud, CheckCircle2 } from 'lucide-react';
 import { Shell, Notice } from '../components/Ui';
 import { errorMessage } from '../services/api';
@@ -10,12 +11,13 @@ export function CandidateAiPage() {
   const [matches, setMatches] = useState<JobMatch[]>([]);
   const [busy, setBusy] = useState(false);
   const [matching, setMatching] = useState(false);
+  const [matchesRequested, setMatchesRequested] = useState(false);
   const [error, setError] = useState('');
 
   const analyze = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!file) { setError('Choose a PDF, DOC, or DOCX resume first.'); return; }
-    setBusy(true); setError(''); setMatches([]);
+    setBusy(true); setError(''); setMatches([]); setMatchesRequested(false);
     try {
       const result = await analyzeCandidateResume(file);
       setAnalysis(result);
@@ -24,7 +26,7 @@ export function CandidateAiPage() {
   };
 
   const findMatches = async () => {
-    setMatching(true); setError('');
+    setMatching(true); setError(''); setMatchesRequested(true);
     try { const result = await getAiJobMatches(); setMatches(result.matches || []); }
     catch (e) { setError(errorMessage(e)); }
     finally { setMatching(false); }
@@ -49,11 +51,11 @@ export function CandidateAiPage() {
         <button onClick={findMatches} disabled={matching} className="btn-primary inline-flex items-center gap-2"><Target size={17}/>{matching ? 'Finding matches…' : 'Find matching jobs'}</button>
       </div>}
     </section>
-    {(matches.length > 0 || matching) && <section className="mt-6 space-y-4"><div><h2 className="text-xl font-bold text-ink">2. Your AI job matches</h2><p className="text-sm text-slate-600">Scores are advisory estimates based on the resume and job descriptions, not hiring decisions.</p></div>
+    {(matchesRequested || matches.length > 0 || matching) && <section className="mt-6 space-y-4"><div><h2 className="text-xl font-bold text-ink">2. Your AI job matches</h2><p className="text-sm text-slate-600">Scores are advisory estimates based on the resume and job descriptions, not hiring decisions.</p></div>
       {matches.map(match => <article key={match.jobId} className="card">
         <div className="flex flex-wrap items-start justify-between gap-3"><div><h3 className="text-lg font-bold text-ink">{match.jobTitle}</h3><p className="mt-1 text-sm text-slate-600">{match.explanation}</p></div><div className="rounded-xl bg-indigo-50 px-4 py-2 text-center"><p className="text-2xl font-bold text-indigo-700">{match.matchScore}%</p><p className="text-xs font-semibold text-indigo-700">Match</p></div></div>
         <div className="mt-4 grid gap-4 sm:grid-cols-2"><ResultList title="Matching skills" values={match.matchingSkills}/><ResultList title="Skills to develop" values={match.missingSkills}/></div>
-        <a href={`/jobs/${match.jobId}`} className="mt-4 inline-block text-sm font-bold text-brand">View job →</a>
+        <Link to={`/jobs/${match.jobId}`} className="mt-4 inline-block text-sm font-bold text-brand">View job →</Link>
       </article>)}
       {!matching && matches.length===0 && <p className="card text-sm text-slate-600">No active job matches were returned. Try again after more jobs are posted.</p>}
     </section>}
