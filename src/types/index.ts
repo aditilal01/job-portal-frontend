@@ -8,3 +8,20 @@ export interface Application { id: string; jobId: string; jobTitle: string; cand
 export interface DashboardJob { jobId: string; jobTitle: string; location: string; isActive: boolean; applicantCount: number; createdAt: string }
 export interface User { id: string; name: string; email: string; role: Role; createdAt: string }
 export interface JobInput { title: string; description: string; requiredSkills: string; location: string; experienceRequired: number; salaryRange?: string }
+export interface CandidateProfile {
+  id?: string;
+  userId?: string;
+  name?: string;
+  email?: string;
+  headline?: string;
+  phone?: string;
+  location?: string;
+  summary?: string;
+  skills?: string;
+  education?: string;
+  experience?: string;
+  portfolioUrl?: string;
+  linkedInUrl?: string;
+  githubUrl?: string;
+  updatedAt?: string;
+}
