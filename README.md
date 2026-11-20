@@ -32,3 +32,8 @@ The token is held in `localStorage` because the current backend returns a bearer
 - Recruiter job editing fetches the full job record from the protected `GET /api/recruiter/jobs/{id}` endpoint before pre-filling the form.
 - Public job search supports title/skills keyword matching, location filtering, maximum experience, pagination, and sorting.
 - User deletion and suspension are not displayed because no backend APIs support them.
+
+
+## AI Career Tools
+
+Candidates can open **AI career tools** to upload a PDF, DOC, or DOCX resume for AI-powered analysis and request ranked matches against active job postings. The backend requires `OPENAI_API_KEY` in its private environment; the key must never be exposed in frontend environment variables.
