@@ -19,6 +19,7 @@ For a production bundle, use `npm run build`.
 
 - Authentication: `/api/auth/register`, `/api/auth/login`
 - Public jobs: `/api/jobs`, `/api/jobs/{id}`
+- Candidate profile: `GET/PUT /api/candidate/profile` (candidate-only; profile fields are stored separately from account credentials)
 - Candidate applications: `/api/applications`, `/api/applications/my`
 - Recruiter dashboard/jobs/applicants: `/api/recruiter/dashboard`, `/api/jobs`, `/api/applications/job/{jobId}`, `/api/applications/{id}/status`
 - Admin directory: `/api/users`
@@ -30,4 +31,4 @@ The token is held in `localStorage` because the current backend returns a bearer
 - Resume downloads use the authenticated API client so protected files are requested with the candidate/recruiter bearer token.
 - Recruiter job editing fetches the full job record from the protected `GET /api/recruiter/jobs/{id}` endpoint before pre-filling the form.
 - Public job search supports title/skills keyword matching, location filtering, maximum experience, pagination, and sorting.
-- User deletion, suspension, and profile editing are intentionally not displayed because no backend APIs support them.
+- User deletion and suspension are not displayed because no backend APIs support them.
