@@ -10,8 +10,8 @@ This checklist is the working implementation plan for evolving HireHub from a fu
 - [ ] Add automated frontend and backend regression tests for core workflows
 
 ## Phase 1 — Complete core product features
-- [ ] Candidate profile: education, experience, skills, projects and links
-- [ ] Candidate profile editing and completion indicator
+- [x] Candidate profile API and persistence (implementation committed; build/runtime verification pending)
+- [x] Candidate profile editing and completion indicator (implementation committed; build/runtime verification pending)
 - [ ] Saved/bookmarked jobs persisted per candidate
 - [ ] Better job search: keyword, location, skills, experience and sorting
 - [ ] Admin user management and job moderation
